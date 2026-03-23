@@ -1,8 +1,15 @@
 import { TVShow } from './types';
 
 export const TV_SHOWS: TVShow[] = [
-  {
-    title: "Abbott Elementary",
+      {
+        title: "200 Classic Cartoons",
+        imageUrl: "https://cdn.jsdelivr.net/gh/MKPlaza/assets@main/200-classic-cartoons.jpg",
+        link: "https://drive.google.com/drive/folders/1_placeholder_cartoons",
+        description: "A massive collection of classic animated shorts from the golden age of animation.",
+        year: "2008"
+      },
+      {
+        title: "Abbott Elementary",
         imageUrl: "https://m.media-amazon.com/images/M/MV5BYjU5YTdlZTItNWM5Yi00OGM1LTk1NGItNjY5MGU3Y2JkOWIwXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
         links: [
           { part: "Season 1", url: "https://drive.google.com/drive/folders/13dLvT0_1TkcRmVmF6tZlm80xqeoWhxZp?usp=drive_link" },
