@@ -534,6 +534,11 @@ export const ANIME: Anime[] = [
                 link: "https://drive.google.com/drive/folders/1dYLldMCPrRMrV5Ke8hTWVQ8WwI8oB46F?usp=sharing"
             },
             {
+                title: "Hunter X Hunter",
+                imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdCnewCyEl6t8di9H5fT2TDD3FWPB08CnsQiGsbMkpgPyQcKE2",
+                link: "https://drive.google.com/drive/u/1/folders/10Agh_95bSPkxlJRnu6-6ttQ2ys_2-Dld"
+            },
+            {
                 title: "I Don't Like You At All, Big Brother!!",
                 imageUrl: "https://m.media-amazon.com/images/M/MV5BMGZiNGM2NWQtMWQzZi00MjY5LTk2MDYtYzYzZmVkMWZiNTBiXkEyXkFqcGc@._V1_.jpg",
                 link: "https://drive.google.com/drive/folders/1tHG6K1VOpC_P83QsCir-xgRctaYGwzuF"
