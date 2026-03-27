@@ -438,7 +438,7 @@ export const MOVIES: Movie[] = [
             {
                 title: "The Day The Earth Blew Up",
                 imageUrl: "https://cdn.jsdelivr.net/gh/dino-cmxy/Chillkirbcentrall@main/MV5BOTgxODk4OTQtMjc2MC00NGRmLWJlMmMtNTdlZjI1NDE0NzE0XkEyXkFqcGc%40._V1_FMjpg_UX1000_.jpg",
-                link: "https://drive.google.com/file/d/1EDmMpex-Xs1V9CT4J4UarVDEs0zRyLqt/view?usp=sharing",
+                link: "https://drive.google.com/file/d/1HPrhjFu-MJ_IIUVVtVBgRs2OXIbld86Q/view",
                 description: "Unlikely heroes save Earth from alien force.",
                 year: "2024"
             },
