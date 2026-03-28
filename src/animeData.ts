@@ -731,7 +731,7 @@ export const ANIME: Anime[] = [
             },
             {
                 title: "Kuroko's Basketball",
-                imageUrl: "https://m.media-amazon.com/images/M/MV5BN2E1M2YxNjAtMGYyMi00YjYyLTk0Y2QtYmY0YmU0Zjg0ZTI3XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
+                imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSM2FhtTL9sdjOMi-0pH6BeAZSuvUuqB1dGaFZmoSWsntnUqlMk",
                 description: "The Seirin High School basketball team attempts to make it to the Interhigh Tournament by defeating the 'Generation of Miracles'.",
                 year: "2012",
                 link: "https://drive.google.com/drive/folders/1DJGR4dUQOYrW2iHC7cT6CYs1hCDlMZ1S?usp=sharing"
