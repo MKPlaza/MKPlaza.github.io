@@ -96,6 +96,13 @@ export const TV_SHOWS: TVShow[] = [
         link: "https://drive.google.com/drive/folders/1F2G8LJaV2rJ2pUlvIeGngHEVV2x8mITp?usp=sharing"
       },
       {
+        title: "Better Call Saul",
+        imageUrl: "https://m.media-amazon.com/images/M/MV5BZDA4YmUyOTAtOWJlMS00ZGEwLTgwZTMtNWU4YmY5NmQxN2MyXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
+        description: "The trials and tribulations of criminal lawyer Jimmy McGill in the years leading up to his fateful run-in with Walter White and Jesse Pinkman.",
+        year: "2015",
+        link: "https://drive.google.com/drive/folders/17RmoOZlDQ_ETrPjI0bwOQBnyGDEDP_Qr?usp=sharing"
+      },
+      {
         title: "Bluey",
         imageUrl: "https://m.media-amazon.com/images/M/MV5BYWU1YmQzMjEtMDNjOS00MGIyLWExY2ItZDAzNmU5NWViMGZmXkEyXkFqcGc@._V1_.jpg",
         description: "An Australian animated series following a Blue Heeler puppy and her family.",
