@@ -97,7 +97,7 @@ export const TV_SHOWS: TVShow[] = [
       },
       {
         title: "Better Call Saul",
-        imageUrl: "https://m.media-amazon.com/images/M/MV5BZDA4YmUyOTAtOWJlMS00ZGEwLTgwZTMtNWU4YmY5NmQxN2MyXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
+        imageUrl: "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcR5Hj4TwQxnwom4YvO7aMOeHEXkN2XGB24Tjdp7gcGHhZ1bapDb",
         description: "The trials and tribulations of criminal lawyer Jimmy McGill in the years leading up to his fateful run-in with Walter White and Jesse Pinkman.",
         year: "2015",
         link: "https://drive.google.com/drive/folders/17RmoOZlDQ_ETrPjI0bwOQBnyGDEDP_Qr?usp=sharing"
