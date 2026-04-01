@@ -26,6 +26,16 @@ interface HomeHubProps {
 
 const CHANGELOG = [
   {
+    version: 'v2',
+    date: 'APR 1, 26',
+    updates: [
+      'Added GOAT',
+      'More G4m3s coming soon',
+      'Added The Super Mario Galaxy Movie!'
+
+    ]
+  },
+  {
     version: 'v1.1.5',
     date: 'MAR 19, 2026',
     updates: [
@@ -38,14 +48,6 @@ const CHANGELOG = [
     updates: [
       'THE DAY THAT MR. KRABS FRIES',
       'Added more m0v135, 4n1m3, 7v 5h0w5, and m4ng4'
-    ]
-  },
-  {
-    version: 'v1.0',
-    date: 'Mar 10, 2026',
-    updates: [
-      'Truly, Welcome to MKPlaza',
-      'Happy Mar10 Day!'
     ]
   }
 ];
