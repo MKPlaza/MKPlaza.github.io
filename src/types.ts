@@ -78,9 +78,11 @@ export interface Game {
   link?: string;
 }
 
+export interface Proxy {\n  url: string;\n}
+
 export interface FavoriteItem {
   id: string;
-  type: 'movie' | 'tv' | 'anime' | 'manga' | 'game';
+  type: 'movie' | 'tv' | 'anime' | 'manga' | 'game' | 'proxy';
   title: string;
   imageUrl: string;
   link: string;

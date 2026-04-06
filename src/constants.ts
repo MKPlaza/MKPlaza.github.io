@@ -1,14 +1,24 @@
 import { ThemePreset, CloakOption, Song } from './types';
 
 export const THEMES: Record<string, ThemePreset> = {
+  galacta: {
+    name: 'Galacta Knight',
+    midnight: '#2d0a1a',
+    eyes: '#ffffff',
+    gold: '#ff8eb1',
+    pixel: false,
+    bg: 'https://cdn.jsdelivr.net/gh/MKPlaza/MKPlaza.github.io@main/Galacta-Knight-peak.jpg',
+    logo: 'https://lh3.googleusercontent.com/sitesv/APaQ0SRJqlzUxI1h3ZZTlwnrpwQQvQpm8r4Rw_xfaRCduWIZ9kmnzfRKMUvS5cRXR9lbcdDBgTNI-Cs4Quac14TBnGsC5rXRXZOwIemBNTQV8_3ypSGu-Qiat09ViZzuSaPEehEx8H36vuhXd63BIzgn1K7Am6k-YBBvgePpF6NGbnsMYa-4n0qaX8yNEmI=w16383',
+    fontFamily: '"Kirsty", "Cinzel Decorative", serif'
+  },
   original: {
-    name: 'Meta Knight (Original)',
+    name: 'Dark Mode',
     midnight: '#0a1128',
     eyes: '#ffeb3b',
     gold: '#ffd700',
     pixel: false,
-    bg: 'https://cdn.jsdelivr.net/gh/MKPlaza/MKPlaza.github.io@main/sean-gorman-galactabattle.jpg',
-    logo: 'https://cdn.jsdelivr.net/gh/MKPlaza/MKPlaza.github.io@main/Meta_Knight_Logo.webp',
+    bg: 'https://picsum.photos/1920/1080?random=1',
+    logo: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTYiIGN5PSIxNiIgcj0iMTQiIGZpbGw9IiNmZmQ3MDAiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIyIi8+Cjx0ZXh0IHg9IjE2IiB5PSIyMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjMDAwIj7wn6UgL3RleHQ+Cjwvc3ZnPgo=',
     fontFamily: '"Cinzel Decorative", serif'
   },
   classic: {
@@ -99,15 +109,4 @@ export const CLOAKS: Record<string, CloakOption> = {
   drive: { title: "My Drive - Google Drive", icon: "https://ssl.gstatic.com/docs/doclist/images/infinite_arrow_favicon_4.ico" }
 };
 
-export const PLAYLIST: Song[] = [
-  { title: "VS. Waning Masked Dedede & Waxing Masked Meta Knight", filename: "1-48. VS. Waning Masked Dedede & Waxing Masked Meta Knight.mp3" },
-  { title: "Galacta Knight Battle - Kirby Super Star Ultra", filename: "Galacta Knight Battle - Kirby Super Star Ultra.mp3" },
-  { title: "Inner Struggle (Vs. Mecha Knight) - Kirby Planet Robobot", filename: "Inner Struggle (Vs. Mecha Knight) - Kirby_ Planet Robobot OST [067].mp3" },
-  { title: "Dark Meta Knight Battle - Amazing Mirror", filename: "Kirby & The Amazing Mirror - Dark Meta Knight Battle.mp3" },
-  { title: "Meta Knight Battle - Kirby Star Allies", filename: "Meta Knight Battle - Kirby Star Allies Music.mp3" },
-  { title: "Meta Knight's Revenge Theme - Smash Ultimate", filename: "Meta Knight's Revenge Theme - Super Smash Bros. Ultimate.mp3" },
-  { title: "Sword of the Surviving Guardian - Forgotten Land", filename: "Sword of the Surviving Guardian - Kirby and the Forgotten Land OST [038].mp3" },
-  { title: "VS. Aeon Hero - Super Kirby Clash", filename: "VS. Aeon Hero - Super Kirby Clash Music.mp3" }
-];
-
-export const MUSIC_BASE_URL = "https://cdn.jsdelivr.net/gh/MKPlaza/MKPlaza.github.io@main/theme-songs/";
+/* Music removed */

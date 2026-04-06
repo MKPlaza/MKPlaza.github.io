@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { 
   Film, 
   Tv, 
@@ -7,11 +7,6 @@ import {
   Settings, 
   ChevronUp, 
   ChevronDown, 
-  Play, 
-  Pause, 
-  SkipBack, 
-  SkipForward, 
-  RotateCcw, 
   X, 
   Terminal, 
   Palette, 
@@ -21,18 +16,20 @@ import {
   BatteryMedium,
   BatteryLow,
   Clock,
-  Github,
   ChevronLeft,
-  Music,
   Home,
   EyeOff,
   Maximize2,
   ExternalLink,
-  Shield,
-  Handshake
+  SkipBack,
+  Play,
+  Pause,
+  SkipForward,
+  RotateCcw,
+  Shield
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { THEMES, CLOAKS, PLAYLIST, MUSIC_BASE_URL } from './constants';
+import { THEMES, CLOAKS } from './constants';
 import { ThemePreset, FavoriteItem, Game } from './types';
 import { GAME_PAYLOADS } from './gamePayloads';
 import { MOVIES } from './movieData';
@@ -41,19 +38,16 @@ import { ANIME } from './animeData';
 import { MANGA } from './mangaData';
 import { GAMES } from './gameData';
 import { PROXIES } from './proxyData';
-import { PARTNERS } from './partnerData';
 import MovieHub from './components/MovieHub';
 import TVHub from './components/TVHub';
 import AnimeHub from './components/AnimeHub';
 import MangaHub from './components/MangaHub';
-import MusicHub from './components/MusicHub';
 import HomeHub from './components/HomeHub';
 import GamesHub from './components/GamesHub';
-import ProxiesHub from './components/ProxiesHub';
-import PartnersHub from './components/PartnersHub';
+import SimpleProxiesHub from './components/SimpleProxiesHub';
 
 export default function App() {
-  const [currentTheme, setCurrentTheme] = useState<ThemePreset>(THEMES.original);
+  const [currentTheme, setCurrentTheme] = useState<ThemePreset>(THEMES.dark);
   const [isNavCollapsed, setIsNavCollapsed] = useState(false);
   const [activeHub, setActiveHub] = useState<string | null>('home');
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
@@ -63,14 +57,19 @@ export default function App() {
   const [time, setTime] = useState(new Date());
   const [battery, setBattery] = useState<{ level: number; charging: boolean } | null>(null);
   const [showWelcome, setShowWelcome] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentSongIndex, setCurrentSongIndex] = useState(0);
+  const [isLooping, setIsLooping] = useState(false);
+  const [isPlayerCollapsed, setIsPlayerCollapsed] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   const [favorites, setFavorites] = useState<FavoriteItem[]>(() => {
-    const saved = localStorage.getItem('mk_favorites');
+    const saved = localStorage.getItem('fas_favorites');
     return saved ? JSON.parse(saved) : [];
   });
 
   useEffect(() => {
-    localStorage.setItem('mk_favorites', JSON.stringify(favorites));
+    localStorage.setItem('fas_favorites', JSON.stringify(favorites));
   }, [favorites]);
 
   const toggleFavorite = (item: FavoriteItem) => {
@@ -82,13 +81,20 @@ export default function App() {
       return [...prev, item];
     });
   };
-  
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [currentSongIndex, setCurrentSongIndex] = useState(0);
-  const [isLooping, setIsLooping] = useState(false);
-  const [isPlayerCollapsed, setIsPlayerCollapsed] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
 
+const PLAYLIST: Array<{title: string; filename: string}> = [
+  {title: 'My Demons', filename: '28 - Starset-My Demons (Lyrics Video).mp3'},
+  {title: 'Another Love', filename: 'Another Love - Tom Odell.mp3'},
+  {title: 'Heat Waves', filename: 'Heat Waves - Glass Animals.mp3'},
+  {title: 'Hymn for the Weekend', filename: '03 Hymn for the Weekend.mp3'},
+  {title: 'Mortals (Slowed + Reverb)', filename: 'Mortals (Slowed + Reverb).mp3'},
+  {title: 'All my friends are toxic', filename: 'All my friends are toxic.mp3'},
+  {title: 'Matushka Ultrafunk', filename: 'Matushka Ultrafunk.mp3'},
+  {title: 'Džanum', filename: '[YT2mp3.info] - Teya Dora - Džanum (lyrics_english lyrics) _ Moje more, my nightmare #dzanum #lyrics #edit #shorts (320kbps).mp3'}
+];
+  const MUSIC_BASE_URL = './theme-songs/';
+
+  
   const [cloakTarget, setCloakTarget] = useState('classroom');
   const [customCloakTitle, setCustomCloakTitle] = useState('');
   const [customCloakFavicon, setCustomCloakFavicon] = useState('');
@@ -118,41 +124,77 @@ export default function App() {
 
   useEffect(() => {
     const root = document.documentElement;
-    root.style.setProperty('--mk-midnight', currentTheme.midnight);
-    root.style.setProperty('--mk-eye-glow', currentTheme.eyes);
-    root.style.setProperty('--mk-gold', currentTheme.gold);
+    root.style.setProperty('--fas-midnight', currentTheme.midnight);
+    root.style.setProperty('--fas-eye-glow', currentTheme.eyes);
+    root.style.setProperty('--fas-gold', currentTheme.gold);
     
     if (currentTheme.pixel) {
       document.body.classList.add('pixel-theme');
     } else {
       document.body.classList.remove('pixel-theme');
     }
+
+    // Angry cursor effect
+    const handleMouseDown = () => document.body.classList.add('pressed');
+    const handleMouseUp = () => document.body.classList.remove('pressed');
+
+    document.addEventListener('mousedown', handleMouseDown);
+    document.addEventListener('mouseup', handleMouseUp);
+
+    return () => {
+      document.removeEventListener('mousedown', handleMouseDown);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
   }, [currentTheme]);
 
-  const togglePlay = () => {
-    if (!audioRef.current) return;
-    if (isPlaying) {
-      audioRef.current.pause();
-    } else {
-      audioRef.current.play().catch(console.error);
-    }
-    setIsPlaying(!isPlaying);
-  };
 
-  const changeTrack = (dir: number) => {
-    const nextIndex = (currentSongIndex + dir + PLAYLIST.length) % PLAYLIST.length;
-    setCurrentSongIndex(nextIndex);
-    setIsPlaying(true);
-  };
 
   useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.src = MUSIC_BASE_URL + encodeURIComponent(PLAYLIST[currentSongIndex].filename);
+    const audio = audioRef.current;
+    if (audio && PLAYLIST[currentSongIndex]) {
+      audio.src = MUSIC_BASE_URL + encodeURIComponent(PLAYLIST[currentSongIndex].filename);
+      audio.preload = 'metadata';
+      audio.loop = isLooping;
       if (isPlaying) {
-        audioRef.current.play().catch(console.error);
+        audio.play().catch(e => console.error('Audio play failed:', e));
       }
     }
-  }, [currentSongIndex]);
+  }, [currentSongIndex, isPlaying, isLooping]);
+
+  const togglePlay = useCallback(() => {
+    const audio = audioRef.current;
+    if (audio) {
+      if (isPlaying) {
+        audio.pause();
+      } else {
+        audio.play().catch(e => console.error('Play failed:', e));
+      }
+      setIsPlaying(!isPlaying);
+    }
+  }, [isPlaying]);
+
+  const nextSong = useCallback(() => {
+    setCurrentSongIndex((prev) => (prev + 1) % PLAYLIST.length);
+    setIsPlaying(true);
+  }, []);
+
+  const prevSong = useCallback(() => {
+    setCurrentSongIndex((prev) => (prev - 1 + PLAYLIST.length) % PLAYLIST.length);
+    setIsPlaying(true);
+  }, []);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (audio) {
+      const handleEnded = () => {
+        if (!isLooping) {
+          nextSong();
+        }
+      };
+      audio.addEventListener('ended', handleEnded);
+      return () => audio.removeEventListener('ended', handleEnded);
+    }
+  }, [isLooping, nextSong]);
 
   const loadHub = (type: string) => {
     setActiveHub(type);
@@ -226,17 +268,17 @@ export default function App() {
   };
 
   return (
-    <div 
-      className="min-h-screen w-full relative transition-all duration-700"
-      style={{ 
-        backgroundImage: `url(${currentTheme.bg})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundAttachment: 'fixed',
-        fontFamily: currentTheme.fontFamily || 'var(--font-cinzel)',
-        fontStyle: currentTheme.fontStyle || 'normal'
-      }}
-    >
+      <div 
+        className="min-h-screen w-full relative transition-all duration-700 bg-black/60 backdrop-blur-md"
+        style={{ 
+          backgroundImage: `url(${currentTheme.bg})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed',
+          fontFamily: currentTheme.fontFamily || 'var(--font-cinzel)',
+          fontStyle: currentTheme.fontStyle || 'normal'
+        }}
+      >
       <AnimatePresence>
         {showWelcome && (
           <motion.div
@@ -245,7 +287,7 @@ export default function App() {
             exit={{ opacity: 0, y: 20, scale: 0.9 }}
             className="fixed bottom-24 left-1/2 -translate-x-1/2 z-[5000] bg-[var(--mk-midnight)]/90 backdrop-blur-xl border border-[var(--mk-gold)]/30 px-8 py-4 rounded-2xl shadow-[0_0_30px_rgba(255,215,0,0.2)] flex items-center gap-4"
           >
-            <div className="w-10 h-10 rounded-full bg-[var(--mk-gold)]/10 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-full bg-[var(--fas-gold)]/10 flex items-center justify-center">
               <motion.img 
                 animate={{ rotate: [0, 10, -10, 0] }}
                 transition={{ repeat: Infinity, duration: 2 }}
@@ -254,12 +296,12 @@ export default function App() {
               />
             </div>
             <div>
-              <h3 className="text-[var(--mk-gold)] font-bold text-sm uppercase tracking-widest">Tab Open!</h3>
-              <p className="text-[var(--mk-silver)] text-xs font-medium">Welcome to MKPlaza</p>
+              <h3 className="text-[var(--fas-gold)] font-bold text-sm uppercase tracking-widest">Tab Open!</h3>
+              <p className="text-[var(--fas-silver)] text-xs font-medium">Welcome to Fasahat Hub</p>
             </div>
             <button 
               onClick={() => setShowWelcome(false)}
-              className="ml-4 text-[var(--mk-silver)]/40 hover:text-[var(--mk-gold)] transition-colors"
+              className="ml-4 text-[var(--fas-silver)]/40 hover:text-[var(--fas-gold)] transition-colors"
             >
               <X className="w-4 h-4" />
             </button>
@@ -277,12 +319,12 @@ export default function App() {
             onClick={goHome}
           />
           <div 
-            className="text-xl font-black uppercase tracking-[3px] text-[var(--mk-gold)] drop-shadow-[0_0_12px_var(--mk-gold)] select-none"
+            className="text-xl font-black uppercase tracking-[3px] text-[var(--fas-gold)] drop-shadow-[0_0_12px_var(--fas-gold)] select-none"
           >
-            MKPlaza
+            Fasahat Hub
           </div>
           
-          <div className="flex items-center gap-5 bg-yellow-400/5 px-4 py-1.5 rounded-full border border-yellow-400/10 font-orbitron text-[11px] text-[var(--mk-gold)] shadow-[0_0_8px_rgba(255,215,0,0.1)]">
+          <div className="flex items-center gap-5 bg-yellow-400/5 px-4 py-1.5 rounded-full border border-yellow-400/10 font-orbitron text-[11px] text-[var(--fas-gold)] shadow-[0_0_8px_rgba(255,215,0,0.1)]">
             <div className="flex items-center gap-2">
               {getBatteryIcon()}
               <span>{battery ? `${battery.level}%` : '--%'}</span>
@@ -295,15 +337,15 @@ export default function App() {
         </div>
 
         <div className="flex-1 overflow-hidden mx-8 hidden lg:flex items-center">
-          <div className="flex gap-12 animate-marquee-reverse whitespace-nowrap text-[var(--mk-gold)] font-bold tracking-widest uppercase text-sm opacity-70">
+        <div className="flex gap-12 animate-marquee-reverse whitespace-nowrap text-[var(--fas-gold)] font-bold tracking-widest uppercase text-sm opacity-70">
             {[...Array(2)].map((_, i) => (
               <React.Fragment key={i}>
-                <span>Chill Kirb Central is still peak</span>
-                <span>M0v13s Galore</span>
-                <span>MKPlaza Supermancy</span>
-                <span>Please check the instructions before clicking the hide button gng</span>
-                <span>ok im out of ideas</span>
-                <span>uhh</span>
+                <span>Chill Vibes Only</span>
+                <span>M0v135 Galore</span>
+                <span>Fasahat Supermancy</span>
+                <span>Cloak before you click</span>
+                <span>Peak Content</span>
+                <span>😂</span>
               </React.Fragment>
             ))}
           </div>
@@ -311,14 +353,7 @@ export default function App() {
 
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-5">
-            <a href="https://discord.gg/kZzGNnmjpv" target="_blank" className="text-[var(--mk-silver)] opacity-70 hover:opacity-100 hover:text-[var(--mk-gold)] transition-all hover:-translate-y-0.5">
-              <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.419-2.1568 2.419zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.419-2.1568 2.419z" />
-              </svg>
-            </a>
-            <a href="https://github.com/MKPlaza" target="_blank" className="text-[var(--mk-silver)] opacity-70 hover:opacity-100 hover:text-[var(--mk-gold)] transition-all hover:-translate-y-0.5">
-              <Github className="w-6 h-6" />
-            </a>
+
           </div>
           <button 
             onClick={() => setIsSettingsOpen(true)}
@@ -337,20 +372,19 @@ export default function App() {
         transition={{ type: 'spring', damping: 20, stiffness: 100 }}
         className="fixed top-20 left-0 w-full h-[60px] bg-[var(--glass-heavy)] backdrop-blur-2xl border-b border-yellow-400/15 flex items-center justify-center gap-4 px-5 z-[1999]"
       >
-        {[
-          { id: 'hide', label: 'Hide', icon: EyeOff, action: () => setActiveHub(null) },
+{[
+          { id: 'home', label: 'Home', icon: Home },
           { id: 'movies', label: 'M0v135', icon: Film, count: MOVIES.length },
           { id: 'tv', label: 'TV 5h0w5', icon: Tv, count: TV_SHOWS.length },
           { id: 'anime', label: 'An1m3', icon: Ghost, count: ANIME.length },
           { id: 'manga', label: 'M4ng4', icon: BookOpenText, count: MANGA.length },
-          { id: 'games', label: 'G4m35', icon: Gamepad2, count: GAMES.length },
-          { id: 'music', label: 'Mu51c', icon: Music },
           { id: 'proxies', label: 'Pr0x135', icon: Shield, count: PROXIES.length },
-          { id: 'partners', label: 'P4rtn3r5', icon: Handshake, count: PARTNERS.length },
+          { id: 'games', label: 'G4m35', icon: Gamepad2, count: GAMES.length },
+
         ].map((item) => (
           <button
             key={item.id}
-            onClick={() => item.action ? item.action() : loadHub(item.id)}
+            onClick={() => item.id === 'home' ? goHome() : loadHub(item.id)}
             className="flex items-center gap-2.5 text-[var(--mk-silver)] px-4 py-2 rounded-lg transition-all border border-transparent hover:bg-yellow-400/10 hover:border-yellow-400/30 hover:-translate-y-0.5 group"
           >
             <item.icon className="w-5 h-5 text-[var(--mk-eye-glow)] drop-shadow-[0_0_5px_var(--mk-eye-glow)]" />
@@ -365,10 +399,10 @@ export default function App() {
           </button>
         ))}
 
-        <button 
-          onClick={() => setIsNavCollapsed(true)}
-          className="absolute -bottom-[22px] left-1/2 -translate-x-1/2 flex items-center justify-center bg-[var(--glass-heavy)] backdrop-blur-md border border-yellow-400/20 border-t-0 text-[var(--mk-gold)] w-[60px] h-[22px] rounded-b-xl hover:h-[26px] transition-all"
-        >
+          <button 
+            onClick={() => setIsNavCollapsed(true)}
+            className="absolute -bottom-[22px] left-1/2 -translate-x-1/2 flex items-center justify-center bg-[var(--glass-heavy)] backdrop-blur-md border border-yellow-400/20 border-t-0 text-[var(--fas-gold)] w-[60px] h-[22px] rounded-b-xl hover:h-[26px] transition-all"
+          >
           <ChevronUp className="w-4 h-4" />
         </button>
       </motion.nav>
@@ -380,7 +414,7 @@ export default function App() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             onClick={() => setIsNavCollapsed(false)}
-            className="fixed top-20 left-1/2 -translate-x-1/2 z-[2001] bg-[var(--mk-gold)] text-[var(--mk-midnight)] w-[60px] h-[22px] rounded-b-xl flex items-center justify-center shadow-lg"
+            className="fixed top-20 left-1/2 -translate-x-1/2 z-[2001] bg-[var(--fas-gold)] text-[var(--fas-midnight)] w-[60px] h-[22px] rounded-b-xl flex items-center justify-center shadow-lg"
           >
             <ChevronDown className="w-4 h-4" />
           </motion.button>
@@ -408,18 +442,11 @@ export default function App() {
         {activeHub === 'tv' && <TVHub favorites={favorites} onToggleFavorite={toggleFavorite} initialSelectedId={selectedItemId} onClearSelectedId={handleClearSelectedId} />}
         {activeHub === 'anime' && <AnimeHub favorites={favorites} onToggleFavorite={toggleFavorite} initialSelectedId={selectedItemId} onClearSelectedId={handleClearSelectedId} />}
         {activeHub === 'manga' && <MangaHub favorites={favorites} onToggleFavorite={toggleFavorite} />}
+{activeHub === 'proxies' && <SimpleProxiesHub />}
         {activeHub === 'games' && <GamesHub favorites={favorites} onToggleFavorite={toggleFavorite} setSelectedGame={setSelectedGame} />}
-        {activeHub === 'music' && (
-          <MusicHub 
-            currentSongIndex={currentSongIndex} 
-            setCurrentSongIndex={setCurrentSongIndex}
-            isPlaying={isPlaying}
-            togglePlay={togglePlay}
-          />
-        )}
-        {activeHub === 'proxies' && <ProxiesHub />}
-        {activeHub === 'partners' && <PartnersHub />}
       </main>
+
+<audio ref={audioRef} preload="metadata" />
 
       <AnimatePresence>
         {selectedGame && (
@@ -480,44 +507,49 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      <motion.div 
-        animate={{ left: isPlayerCollapsed ? -415 : 30 }}
-        transition={{ type: 'spring', damping: 25, stiffness: 120 }}
-        className="fixed bottom-[30px] flex items-center z-[1000]"
-      >
-        <div className="h-[54px] w-[400px] bg-[var(--mk-midnight)]/85 backdrop-blur-2xl rounded-full border border-yellow-400/10 flex items-center px-5 shadow-2xl">
-          <div className="flex-1 overflow-hidden whitespace-nowrap mr-4 relative">
-            <div className="inline-block text-sm text-[var(--mk-silver)] animate-marquee pl-full">
-              {PLAYLIST[currentSongIndex].title}
+
+        {isPlayerCollapsed ? null : (
+          <motion.div 
+            className="fixed bottom-6 left-6 z-[1000] flex items-center gap-3"
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+          >
+            <div className="h-[54px] w-[400px] bg-[var(--mk-midnight)]/90 backdrop-blur-2xl rounded-full border border-yellow-400/20 flex items-center px-6 shadow-2xl">
+              <div className="flex-1 overflow-hidden whitespace-nowrap mr-4" title={PLAYLIST[currentSongIndex]?.title}>
+                <div className="inline-block text-sm text-[var(--mk-silver)]">
+                  {PLAYLIST[currentSongIndex]?.title || 'No tracks loaded'}
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <button 
+                  onClick={prevSong}
+                  className="p-2 text-[var(--mk-silver)] hover:text-[var(--mk-gold)] transition-colors rounded-full bg-white/5 hover:bg-white/10"
+                >
+                  <SkipBack className="w-4 h-4" />
+                </button>
+                <button 
+                  onClick={togglePlay}
+                  className="w-12 h-12 bg-[var(--mk-gold)] text-[var(--mk-midnight)] rounded-full flex items-center justify-center shadow-lg font-bold transition-all hover:scale-105"
+                >
+                  {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
+                </button>
+                <button 
+                  onClick={nextSong}
+                  className="p-2 text-[var(--mk-silver)] hover:text-[var(--mk-gold)] transition-colors rounded-full bg-white/5 hover:bg-white/10"
+                >
+                  <SkipForward className="w-4 h-4" />
+                </button>
+                <button 
+                  onClick={() => setIsLooping(!isLooping)}
+                  className={`p-1.5 ml-1 rounded-full transition-colors ${isLooping ? 'bg-[var(--mk-gold)] text-[var(--mk-midnight)]' : 'text-[var(--mk-silver)] hover:text-[var(--mk-gold)] bg-white/5 hover:bg-white/10'}`}
+                  title="Toggle Loop"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                </button>
+              </div>
             </div>
-          </div>
-          <div className="flex items-center gap-1">
-            <button onClick={() => changeTrack(-1)} className="p-2 text-[var(--mk-silver)] hover:text-[var(--mk-gold)] transition-colors">
-              <SkipBack className="w-4 h-4" />
-            </button>
-            <button onClick={togglePlay} className="p-2 text-[var(--mk-silver)] hover:text-[var(--mk-gold)] transition-colors">
-              {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-            </button>
-            <button onClick={() => changeTrack(1)} className="p-2 text-[var(--mk-silver)] hover:text-[var(--mk-gold)] transition-colors">
-              <SkipForward className="w-4 h-4" />
-            </button>
-            <button 
-              onClick={() => setIsLooping(!isLooping)} 
-              className={`p-2 transition-colors ${isLooping ? 'text-[var(--mk-gold)]' : 'text-[var(--mk-silver)] hover:text-[var(--mk-gold)]'}`}
-            >
-              <RotateCcw className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-        <button 
-          onClick={() => setIsPlayerCollapsed(!isPlayerCollapsed)}
-          className="w-10 h-10 ml-3 bg-[var(--mk-midnight)]/85 backdrop-blur-md border border-yellow-400/15 rounded-full flex items-center justify-center text-[var(--mk-silver)] hover:text-[var(--mk-gold)] transition-all"
-        >
-          <motion.div animate={{ rotate: isPlayerCollapsed ? 180 : 0 }}>
-            <ChevronLeft className="w-5 h-5" />
           </motion.div>
-        </button>
-      </motion.div>
+        )}
 
       <AnimatePresence>
         {isSettingsOpen && (
@@ -665,11 +697,6 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      <audio 
-        ref={audioRef} 
-        loop={isLooping}
-        onEnded={() => !isLooping && changeTrack(1)}
-      />
     </div>
   );
 }
