@@ -149,6 +149,13 @@ export const TV_SHOWS: TVShow[] = [
         link: "https://drive.google.com/drive/folders/1idzqcZUju0ADDEWnm1D9AC344rIFiGRN?usp=drive_link"
       },
       {
+        title: "Common Side Effects",
+        imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSILsd87WuzQJ2JtqDis5TLpztED4nUkC57DIfoY8es3oGo71hX",
+        description: "Two former high school friends must navigate a world of corporate conspiracy and strange occurrences in this dark comedy series.",
+        year: "2025",
+        link: "https://drive.google.com/drive/folders/1FrJJPclMG2BI9q0LK8WIKnGUpofmv9uG"
+      },
+      {
         title: "Danny Phantom",
         imageUrl: "https://m.media-amazon.com/images/M/MV5BNjJlNzc4ODktOGVjYS00MTJkLTgzZTYtZGViMDNlNmM2MGE2XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
         description: "A teenager gains ghost powers and protects his town from spectral threats.",
@@ -195,6 +202,13 @@ export const TV_SHOWS: TVShow[] = [
         link: "https://drive.google.com/drive/folders/1-kchkgMKhucUCfcyTZ5j5_GS8jWu9TQC?usp=sharing"
       },
       {
+        title: "Godzilla - The Original Animated Series",
+        imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQG-aNR8qFmAYCfHuckWwXvy0kZ5IVkRoSwd6C9UXJkLuAZGPEU",
+        description: "The classic Hanna-Barbera adventures of Godzilla and his nephew Godzooky as they protect the world from giant monsters.",
+        year: "1978",
+        link: "https://drive.google.com/drive/folders/1hLmZo78hwuNQPtJauvSg7vRHHG5izmAG"
+      },
+      {
         title: "Gravity Falls",
         imageUrl: "https://m.media-amazon.com/images/M/MV5BMTEzNDc3MDQ2NzNeQTJeQWpwZ15BbWU4MDYzMzUwMDIx._V1_FMjpg_UX1000_.jpg",
         description: "Two siblings spend the summer with their great-uncle in a mysterious town.",
@@ -221,6 +235,20 @@ export const TV_SHOWS: TVShow[] = [
         description: "An animated series about the princess of Hell opening a hotel for sinners.",
         year: "2024",
         link: "https://drive.google.com/drive/folders/1FnnwXwhzJgxIFFjp9I0uW6EFknZ8l6U7?usp=drive_link"
+      },
+      {
+        title: "Helluva Boss",
+        imageUrl: "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQoVEVFS8JZ3JidOAtHZf1Gf8v82x-c6c1w3ZZS1LgI7f7Ine25",
+        description: "In the fiery depths of Hell, a group of imps runs an assassination agency targeting the living world.",
+        year: "2019",
+        link: "https://drive.google.com/drive/folders/1-0vYAQcrZ8dZtpNUFh-fG-X60aigQNuP"
+      },
+      {
+        title: "Heated Rivalry",
+        imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQu3ooe5FqsdWCsy8iu1VR_0B2ACoBk4IM83XOXDVXbwAVkH1mR",
+        description: "Two rival hockey stars must confront their feelings for each other as they compete on the ice and deal with the pressures of professional sports.",
+        year: "2025",
+        link: "https://drive.google.com/drive/folders/1jvDzjCxZClLjqZqyt7yfEWmFhO1YOziw?usp=drive_link"
       },
       {
         title: "Hey Arnold",
@@ -319,6 +347,13 @@ export const TV_SHOWS: TVShow[] = [
         description: "A Marvel series following a man with dissociative identity disorder who gains powers from an Egyptian god.",
         year: "2022",
         link: "https://drive.google.com/drive/folders/1nW610bRzpYobTHqK5k13LRkiZrRvDmZ8?usp=sharing"
+      },
+      {
+        title: "Murderbot",
+        imageUrl: "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQuudzd1IIRnBqezBADS3Doo66HQT2WpW5u3Fwu9bpjNZfaNM0k",
+        description: "A self-hacking security android who calls itself 'Murderbot' would much rather be watching media than dealing with its human clients.",
+        year: "2025",
+        link: "https://drive.google.com/drive/folders/1lt15xhc40wmCIjBhbrbk4TNuCTUekJR_"
       },
       {
         title: "Murder Drones",
