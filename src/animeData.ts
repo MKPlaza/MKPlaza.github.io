@@ -2,6 +2,34 @@ import { Anime } from './types';
 
 export const ANIME: Anime[] = [
             {
+                title: "New Panty and Stocking with Garterbelt",
+                imageUrl: "https://raw.githubusercontent.com/MKPlaza/hydra-assets/main/thumbs/new-psg.avif",
+                description: "The long-awaited continuation of the chaotic adventures of the Anarchy sisters, Panty and Stocking.",
+                year: "2025",
+                link: "#"
+            },
+            {
+                title: "Panty and Stocking with Garterbelt",
+                imageUrl: "https://raw.githubusercontent.com/MKPlaza/hydra-assets/main/thumbs/psg.avif",
+                description: "Two angels are kicked out of Heaven for bad behavior and must earn their way back by hunting ghosts in Daten City.",
+                year: "2010",
+                link: "#"
+            },
+            {
+                title: "Saga of Tanya the Evil",
+                imageUrl: "https://raw.githubusercontent.com/MKPlaza/hydra-assets/main/thumbs/tanya-evil.avif",
+                description: "A ruthless Japanese salaryman is reincarnated as a magical girl in an alternate world's World War I, determined to defy a self-proclaimed god.",
+                year: "2017",
+                link: "#"
+            },
+            {
+                title: "Aggretsuko",
+                imageUrl: "https://raw.githubusercontent.com/MKPlaza/hydra-assets/main/thumbs/aggretsuko.avif",
+                description: "Retsuko is a red panda who deals with the frustrations of her dead-end office job by singing death metal at a local karaoke bar.",
+                year: "2018",
+                link: "#"
+            },
+            {
                 title: "Accel World",
                 imageUrl: "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQrrCMEsZr3GVvc8C-ABixg_cNz23Jcy9nIg4dc24tSTtAWmrBr",
                 description: "A young boy bullied for his weight finds solace in a virtual reality game.",
@@ -129,10 +157,18 @@ export const ANIME: Anime[] = [
             },
             {
                 title: "Blue Lock",
-                imageUrl: "https://cdn.jsdelivr.net/gh/Trainboy89/n@main/MV5BNWFlNmJkN2YtNGRiZS00NjExLTlmNmEtYzdiMTdiZmMzYzAwXkEyXkFqcGc%40._V1_QL75_UX190_CR0%2C2%2C190%2C281_.jpg",
-                description: "Japan's best young strikers compete for a spot on the national team.",
+                imageUrl: "https://m.media-amazon.com/images/M/MV5BMmM3OTU1YTMtMmI0Mi00ZTIyLTgxMzEtNTAwYWUyYmNlMTRhXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
+                description: "Japan's best young strikers compete for a spot on the national team in the ultimate soccer survival program.",
                 year: "2022",
-                link: "https://drive.google.com/drive/folders/1L_4PmRvkuqYsvLQSzMuaqRVDQg2pb9Z6"
+                links: [{
+                        part: "Season 1",
+                        url: "https://drive.google.com/drive/folders/1L_4PmRvkuqYsvLQSzMuaqRVDQg2pb9Z6"
+                    },
+                    {
+                        part: "Season 2",
+                        url: "https://drive.google.com/drive/folders/15ep2pA9yoej1T58CTCxiyAd73rjvjKoY?usp=drive_link"
+                    }
+                ]
             },
             {
                 title: "BNA: Brand New Animal",
